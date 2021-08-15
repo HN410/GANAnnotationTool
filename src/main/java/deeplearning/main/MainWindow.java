@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import deeplearning.panels.ImagesPanel;
 import javafx.scene.layout.Border;
 
 public class MainWindow extends JFrame {
@@ -48,6 +49,9 @@ public class MainWindow extends JFrame {
 
         JPanel interactivePanel = new JPanel();
         interactivePanel.setLayout(new BoxLayout(interactivePanel, BoxLayout.X_AXIS));
+        
+        ImagesPanel imagesPanel = new ImagesPanel();
+        interactivePanel.add(imagesPanel);
 
         allPanel.add(BorderLayout.CENTER, interactivePanel);
                 
