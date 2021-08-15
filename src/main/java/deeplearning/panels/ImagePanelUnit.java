@@ -54,6 +54,7 @@ public class ImagePanelUnit extends JPanel{
         JLabel label = new JLabel();
         label.setMinimumSize(new Dimension(IMAGE_SIZE, IMAGE_SIZE));
         label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        label.setTransferHandler(new DropFileHandler(this, mainWindow));
         return label;
     }
 
