@@ -19,7 +19,7 @@ public class MainWindow extends JFrame {
     private static int WINDOW_X = 100;
     private static int WINDOW_Y = 100;
 
-    private static int MESSAGE_FONT_SIZE = 25;
+    private static int MESSAGE_FONT_SIZE = 16;
 
     private static String TITLE = "GANAnnotationTool";
 
