@@ -6,26 +6,33 @@ import java.awt.MediaTracker;
 import java.awt.Image;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 //画像一枚分のJPanel
 public class ImagePanelUnit extends JPanel{
-    private static int IMAGE_SIZE = 300;
+    private static int IMAGE_SIZE = 200;
     private static int LABEL_MARGIN_W = 10;
 
     private JLabel imageLabel;
 
     public ImagePanelUnit(String labelText){
         setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(IMAGE_SIZE, IMAGE_SIZE + LABEL_MARGIN_W*2));
+
+        JPanel imagePanel = new JPanel();
+        imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
 
         imageLabel = getImageLabel();
         setImage();
+        imagePanel.add(imageLabel);
 
         JPanel label = getLabelPanel(labelText);
+
         add(BorderLayout.SOUTH, label);
-        add(BorderLayout.CENTER, imageLabel);
+        add(BorderLayout.CENTER, imagePanel);
 
     }
 
@@ -36,8 +43,8 @@ public class ImagePanelUnit extends JPanel{
 
     private JLabel getImageLabel() {
         JLabel label = new JLabel();
-        label.setPreferredSize(new Dimension(IMAGE_SIZE, IMAGE_SIZE));
-
+         label.setMinimumSize(new Dimension(IMAGE_SIZE, IMAGE_SIZE));
+         label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         return label;
     }
 
