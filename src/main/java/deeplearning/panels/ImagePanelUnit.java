@@ -1,5 +1,9 @@
 package deeplearning.panels;
 
+import java.awt.EventQueue;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.MediaTracker;
@@ -43,8 +47,8 @@ public class ImagePanelUnit extends JPanel{
 
     private JLabel getImageLabel() {
         JLabel label = new JLabel();
-         label.setMinimumSize(new Dimension(IMAGE_SIZE, IMAGE_SIZE));
-         label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        label.setMinimumSize(new Dimension(IMAGE_SIZE, IMAGE_SIZE));
+        label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         return label;
     }
 
