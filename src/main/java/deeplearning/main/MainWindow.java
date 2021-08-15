@@ -2,6 +2,7 @@ package deeplearning.main;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.util.Properties;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -25,13 +26,18 @@ public class MainWindow extends JFrame {
 
     private JLabel messageLabel;
 
+    public Properties properties;
+
     public MainWindow(){
         super();
         setTitle(TITLE);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);  
-        
+
+        properties = PropertiesClass.getProperties();
+
+
         JPanel allPanel = getAllPanel();
 
         setContentPane(allPanel);
