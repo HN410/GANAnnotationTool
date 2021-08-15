@@ -16,14 +16,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import deeplearning.main.MainWindow;
+
 //画像一枚分のJPanel
 public class ImagePanelUnit extends JPanel{
     private static int IMAGE_SIZE = 200;
     private static int LABEL_MARGIN_W = 10;
 
+    private MainWindow mainWindow;
     private JLabel imageLabel;
 
-    public ImagePanelUnit(String labelText){
+    public ImagePanelUnit(MainWindow mainWindow, String labelText){
+        this.mainWindow = mainWindow;
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(IMAGE_SIZE, IMAGE_SIZE + LABEL_MARGIN_W*2));
 
