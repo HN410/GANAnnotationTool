@@ -50,7 +50,7 @@ public class MainWindow extends JFrame {
         JPanel interactivePanel = new JPanel();
         interactivePanel.setLayout(new BoxLayout(interactivePanel, BoxLayout.X_AXIS));
         
-        ImagesPanel imagesPanel = new ImagesPanel();
+        ImagesPanel imagesPanel = new ImagesPanel(this);
         interactivePanel.add(imagesPanel);
 
         allPanel.add(BorderLayout.CENTER, interactivePanel);
@@ -70,6 +70,11 @@ public class MainWindow extends JFrame {
         panel.add(sep);
         panel.add(messageLabel);
         return panel;
+    }
+
+    public void setMessage(String text){
+        // messageLabelにメッセージを表示できる
+        messageLabel.setText(text);
     }
     
     
