@@ -15,7 +15,7 @@ import javafx.scene.layout.Border;
 
 public class MainWindow extends JFrame {
     private static int WINDOW_W = 800;
-    private static int WINDOW_H = 600;
+    private static int WINDOW_H = 340;
     private static int WINDOW_X = 100;
     private static int WINDOW_Y = 100;
 
