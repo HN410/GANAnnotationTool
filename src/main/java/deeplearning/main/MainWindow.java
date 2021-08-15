@@ -1,17 +1,28 @@
 package deeplearning.main;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+
+import javafx.scene.layout.Border;
 
 public class MainWindow extends JFrame {
-    public static int WINDOW_W = 800;
-    public static int WINDOW_H = 600;
-    public static int WINDOW_X = 100;
-    public static int WINDOW_Y = 100;
-    public static String TITLE = "GANAnnotationTool";
+    private static int WINDOW_W = 800;
+    private static int WINDOW_H = 600;
+    private static int WINDOW_X = 100;
+    private static int WINDOW_Y = 100;
+
+    private static int MESSAGE_FONT_SIZE = 25;
+
+    private static String TITLE = "GANAnnotationTool";
+
+    private JLabel messageLabel;
 
     public MainWindow(){
         super();
@@ -21,8 +32,7 @@ public class MainWindow extends JFrame {
         setBounds(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);  
         
         JPanel allPanel = getAllPanel();
-        JLabel test = new JLabel("test");
-        allPanel.add(test);
+
         setContentPane(allPanel);
         
 
@@ -31,8 +41,26 @@ public class MainWindow extends JFrame {
     public JPanel getAllPanel(){
         JPanel allPanel = new JPanel();
         allPanel.setLayout(new BorderLayout());
+
+        JPanel messagePanel = getMessagePanel();
+
+        allPanel.add(BorderLayout.SOUTH, messagePanel);
         
         return allPanel;
+    }
+
+    public JPanel getMessagePanel(){
+        //メッセージ表示部の作成
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        JSeparator sep = new JSeparator(SwingConstants.HORIZONTAL);
+        messageLabel = new JLabel("test");
+        messageLabel.setFont(new Font("ＭＳ ゴシック", Font.PLAIN, MESSAGE_FONT_SIZE));
+
+        panel.add(sep);
+        panel.add(messageLabel);
+        return panel;
     }
     
     
