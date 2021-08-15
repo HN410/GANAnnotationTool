@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.File;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.MediaTracker;
@@ -86,5 +87,10 @@ public class ImagePanelUnit extends JPanel{
         icon = new ImageIcon(image);
 
         return icon;
+    }
+
+    public void imageDropped(File file){
+        //画像がドロップされたら呼び出される
+
     }
 }

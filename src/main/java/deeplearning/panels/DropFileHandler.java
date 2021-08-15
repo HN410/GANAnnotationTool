@@ -8,13 +8,17 @@ import java.util.List;
 
 import javax.swing.TransferHandler;
 
+import deeplearning.main.MainWindow;
+
 
 public class DropFileHandler extends TransferHandler{
     private ImagePanelUnit ipu;
+    private MainWindow mainWindow;
 
-    public DropFileHandler(ImagePanelUnit ipu){
+    public DropFileHandler(ImagePanelUnit ipu, MainWindow mainWindow){
         super();
         this.ipu = ipu;
+        this.mainWindow = mainWindow;
     }
 
     @Override
@@ -41,7 +45,10 @@ public class DropFileHandler extends TransferHandler{
 			try {
 				// ファイルを受け取る
 				List files = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
-                
+                if(files.size() != 1){
+                    //一枚の時のみ受け取る
+                    return false;
+                }
 
 
 			} catch (UnsupportedFlavorException | IOException e) {
