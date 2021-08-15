@@ -39,13 +39,18 @@ public class MainWindow extends JFrame {
     }
 
     public JPanel getAllPanel(){
+        //メイン画面の作成
         JPanel allPanel = new JPanel();
         allPanel.setLayout(new BorderLayout());
 
         JPanel messagePanel = getMessagePanel();
-
         allPanel.add(BorderLayout.SOUTH, messagePanel);
-        
+
+        JPanel interactivePanel = new JPanel();
+        interactivePanel.setLayout(new BoxLayout(interactivePanel, BoxLayout.X_AXIS));
+
+        allPanel.add(BorderLayout.CENTER, interactivePanel);
+                
         return allPanel;
     }
 
