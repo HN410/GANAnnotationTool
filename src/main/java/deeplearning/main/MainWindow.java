@@ -1,5 +1,7 @@
 package deeplearning.main;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,12 +20,19 @@ public class MainWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);  
         
-        JPanel allPanel = new JPanel();
+        JPanel allPanel = getAllPanel();
         JLabel test = new JLabel("test");
         allPanel.add(test);
         setContentPane(allPanel);
         
 
+    }
+
+    public JPanel getAllPanel(){
+        JPanel allPanel = new JPanel();
+        allPanel.setLayout(new BorderLayout());
+        
+        return allPanel;
     }
     
     
