@@ -2,6 +2,8 @@ package deeplearning.main;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Properties;
 
 import javax.swing.BoxLayout;
@@ -11,10 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import deeplearning.dataInfo.DataInfo;
 import deeplearning.panels.ImagesPanel;
 import javafx.scene.layout.Border;
 
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements WindowListener{
     private static int WINDOW_W = 800;
     private static int WINDOW_H = 340;
     private static int WINDOW_X = 100;
@@ -27,6 +30,7 @@ public class MainWindow extends JFrame {
     private JLabel messageLabel;
 
     public Properties properties;
+    public DataInfo dataInfo;
 
     public MainWindow(){
         super();
@@ -36,14 +40,17 @@ public class MainWindow extends JFrame {
         setBounds(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);  
 
         properties = PropertiesClass.getProperties();
-
+        dataInfo = DataInfo.getDataInfo(properties.getProperty(PropertiesClass.CONFIG_PATH));
+        
 
         JPanel allPanel = getAllPanel();
 
         setContentPane(allPanel);
-        
 
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addWindowListener(this);
     }
+        
 
     public JPanel getAllPanel(){
         //メイン画面の作成
@@ -82,8 +89,53 @@ public class MainWindow extends JFrame {
         // messageLabelにメッセージを表示できる
         messageLabel.setText(text);
     }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        // TODO Auto-generated method stub
+        PropertiesClass.setProperties(properties);
+        dataInfo.save();
+        dispose();
+        System.exit(0);
+        
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
     
-    
-    
+       
     
 }
