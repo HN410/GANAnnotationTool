@@ -2,6 +2,8 @@ package deeplearning;
 
 import javax.swing.JFrame;
 
+import deeplearning.main.MainWindow;
+
 /**
  * Hello world!
  *
@@ -10,7 +12,8 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.setVisible(true);
         
         
     }
