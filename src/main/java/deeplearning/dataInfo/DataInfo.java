@@ -19,10 +19,10 @@ import deeplearning.main.ErrorChecker;
 
 public class DataInfo implements Serializable{
     private static final long serialVersionUID = 1L;
-    public static String DATA_FILE_NAME = "config.data";
-    private static String SOURCE_FOLDER = "source\\";
-    private static String TARGET_FOLDER = "target\\";
-    private static String TAGS_FILE_NAME = "tags.json";
+    private static final String DATA_FILE_NAME = "config.data";
+    private static final String SOURCE_FOLDER = "source\\";
+    private static final String TARGET_FOLDER = "target\\";
+    private static final String TAGS_FILE_NAME = "tags.json";
 
 
     public LinkedHashMap<String, Boolean> tagRule; //タグ規則 タグ名と連続値かのboolean

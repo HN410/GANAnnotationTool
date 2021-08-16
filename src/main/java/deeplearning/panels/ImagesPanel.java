@@ -11,8 +11,8 @@ import javafx.scene.image.Image;
 //画像部分のパネル
 public class ImagesPanel extends JPanel{
 
-    private static String SOURCE_LABEL = "Source image";
-    private static String TARGET_LABEL = "Target image";
+    private static final String SOURCE_LABEL = "Source image";
+    private static final String TARGET_LABEL = "Target image";
 
     public ImagesPanel(MainWindow mainWindow){
         super();

@@ -27,8 +27,8 @@ import deeplearning.main.MainWindow;
 
 //画像一枚分のJPanel
 public class ImagePanelUnit extends JPanel{
-    private static int IMAGE_SIZE = 200;
-    private static int LABEL_MARGIN_W = 10;
+    private static final int IMAGE_SIZE = 200;
+    private static final int LABEL_MARGIN_W = 10;
 
     private boolean isTagged = false; //今表示されている画像はdataInfo.tagsにデータとして入っているか
     private boolean isSource;//ソースの方の画面か

@@ -13,10 +13,10 @@ import deeplearning.main.MainWindow;
 
 
 public class DropFileHandler extends TransferHandler{
-    private static String MULTI_FILE_ERROR = "画像は一枚だけドロップしてください";
-    private static String NOT_IMAGE_ERROR = "適切な拡張子のものをドロップしてください";
+    private static final String MULTI_FILE_ERROR = "画像は一枚だけドロップしてください";
+    private static final String NOT_IMAGE_ERROR = "適切な拡張子のものをドロップしてください";
 
-    private static String[] VALID_EXTS = {".jpg", ".png", ".gif"};
+    private static final String[] VALID_EXTS = {".jpg", ".png", ".gif"};
 
 
     private ImagePanelUnit ipu;

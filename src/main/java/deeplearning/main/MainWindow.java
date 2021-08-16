@@ -20,14 +20,14 @@ import deeplearning.panels.ImagesPanel;
 import javafx.scene.layout.Border;
 
 public class MainWindow extends JFrame implements WindowListener{
-    private static int WINDOW_W = 800;
-    private static int WINDOW_H = 340;
-    private static int WINDOW_X = 100;
-    private static int WINDOW_Y = 100;
+    private static final int WINDOW_W = 800;
+    private static final int WINDOW_H = 340;
+    private static final int WINDOW_X = 100;
+    private static final int WINDOW_Y = 100;
 
-    private static int MESSAGE_FONT_SIZE = 16;
+    private static final int MESSAGE_FONT_SIZE = 16;
 
-    private static String TITLE = "GANAnnotationTool";
+    private static final String TITLE = "GANAnnotationTool";
 
     private JLabel messageLabel;
 
