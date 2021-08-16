@@ -18,8 +18,8 @@ public class ImagesPanel extends JPanel{
         super();
         setLayout(new GridLayout(1, 2));
 
-        ImagePanelUnit ipu1 = new ImagePanelUnit(mainWindow, SOURCE_LABEL);
-        ImagePanelUnit ipu2 = new ImagePanelUnit(mainWindow, TARGET_LABEL);
+        ImagePanelUnit ipu1 = new ImagePanelUnit(mainWindow, SOURCE_LABEL, true);
+        ImagePanelUnit ipu2 = new ImagePanelUnit(mainWindow, TARGET_LABEL, false);
         
         add(ipu1);
         add(ipu2);
