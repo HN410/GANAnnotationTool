@@ -1,5 +1,11 @@
 package deeplearning.dataInfo;
 
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,6 +53,7 @@ public class DataInfo implements Serializable{
         sourceImages = new HashSet<>();
         targetImages = new HashSet<>();
         DataInitializer.init(this);
+        getTags(folderPath);
     }
 
     private void setFilePath(String folderPath) {
@@ -84,10 +91,35 @@ public class DataInfo implements Serializable{
         } catch (ClassNotFoundException e) {
             ErrorChecker.errorCheck(e);
         }
+        dataInfo.getTags(folderPath);
         return dataInfo;
     }
     
     
+    private void getTags(String folderName) {
+        //tagsを読み込みor作成
+        Path folder = Paths.get(folderPath);
+        Path tagFilePath = folder.resolve(TAGS_FILE_NAME);
+        if(!tagFilePath.toFile().exists()){
+            tags = new LinkedList<>();
+            return;
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            tags = mapper.readValue(tagFilePath.toFile(), new TypeReference<LinkedList<HashMap<String, Float[]>>>(){});
+        } catch (StreamReadException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        } catch (DatabindException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        }
+    }
+
     public void save() {
         //ファイルに保存
         try {
