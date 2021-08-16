@@ -87,11 +87,24 @@ public class LabelUnit extends JPanel{
         slider.addChangeListener(new ChangeListener(){
             @Override
             public void stateChanged(ChangeEvent e) {
-                float value = (float) slider.getValue() / SLIDER_MAX;
-                String text = String.format(VALUE_FORMAT, value);
+                String text = String.format(VALUE_FORMAT, getSliderValue());
                 valueLabel.setText(text);
             }
         });
+    }
+
+    private float getSliderValue(){
+        float value = (float) slider.getValue() / SLIDER_MAX;
+        return value;
+    }
+
+    public float getValue(){
+        //チェックボックス，スライダーどちらの場合でも共通の値を返す
+        if(isContinuous){
+            return getSliderValue();
+        }else{
+            return checkBox.isSelected() ? 1.0f : 0.0f;
+        }
     }
     
 }
