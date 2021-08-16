@@ -2,6 +2,7 @@ package deeplearning.panels;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -9,6 +10,7 @@ import java.awt.Dimension;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 import deeplearning.main.MainWindow;
 
@@ -21,6 +23,7 @@ public class TagsPanel extends JPanel{
 
     private JButton nextButton;
     private JButton previousButton;
+    private JLabel indexLabel;
     private MainWindow mainWindow;
     private LinkedList<LabelUnit> labelUnits;
     public TagsPanel(MainWindow mainWindow){
@@ -44,8 +47,12 @@ public class TagsPanel extends JPanel{
         nextButton = new JButton(NEXT_BUTTON_TEXT);
         previousButton = new JButton(PREV_BUTTON_TEXT);
 
+        indexLabel= new JLabel("");
+        indexLabel.setHorizontalAlignment(JLabel.CENTER);
+
         panel.add(BorderLayout.EAST, nextButton);
         panel.add(BorderLayout.WEST, previousButton);
+        panel.add(BorderLayout.CENTER, indexLabel);
 
         return panel;
     }
@@ -70,6 +77,10 @@ public class TagsPanel extends JPanel{
             verticalBox.add(lu);
             labelUnits.add(lu);
         }
+    }
+
+    public void setIndexLabel(int i){
+        indexLabel.setText("" + i);
     }
     
 }
