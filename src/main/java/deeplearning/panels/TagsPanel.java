@@ -1,10 +1,13 @@
 package deeplearning.panels;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import java.awt.Dimension;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.awt.BorderLayout;
 
 import deeplearning.main.MainWindow;
@@ -18,8 +21,12 @@ public class TagsPanel extends JPanel{
 
     private JButton nextButton;
     private JButton previousButton;
+    private MainWindow mainWindow;
+    private LinkedList<LabelUnit> labelUnits;
     public TagsPanel(MainWindow mainWindow){
         super();
+        this.mainWindow = mainWindow;
+        this.labelUnits = new LinkedList<>();
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(PANEL_W, PANEL_H));
         
@@ -45,8 +52,24 @@ public class TagsPanel extends JPanel{
 
 
     private JScrollPane getTagsScrollPane() {
-        JScrollPane pane = new JScrollPane();
+        JScrollPane pane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        pane.setPreferredSize(new Dimension(PANEL_W, PANEL_H));
+        Box verticalBox = Box.createVerticalBox();
+        pane.setViewportView(verticalBox);
+
+        addLabelUnits(verticalBox);
         return pane;
+    }
+
+
+    private void addLabelUnits(Box verticalBox) {
+        LinkedHashMap<String, Boolean> tagRule = mainWindow.dataInfo.tagRule;
+        for(String tag: tagRule.keySet()){
+            LabelUnit lu = new LabelUnit(tag, tagRule.get(tag));
+            verticalBox.add(lu);
+            labelUnits.add(lu);
+        }
     }
     
 }

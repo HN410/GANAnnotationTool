@@ -9,20 +9,23 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import javafx.scene.layout.Border;
+
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
 public class LabelUnit extends JPanel{
     //ラベル付けをする部分の1項目分
-
+    private static final int PANEL_W = 200;
+    private static final int PANEL_H = 20;
     private final static int EDGE_MARGIN_W = 15;
     private final static int OUTER_GRID_W = 2;
     private final static int OUTER_GRID_H = 1;
     private final static int SLIDER_MIN = 0; 
     private final static int SLIDER_MAX = 100;
     private final static String VALUE_LABEL_TEXT = "0.00";
-    private final static String VALUE_FORMAT = "{.02f}";
+    private final static String VALUE_FORMAT = "%.02f";
 
 
     private boolean isContinuous;    
@@ -32,6 +35,7 @@ public class LabelUnit extends JPanel{
 
     public LabelUnit(String label, boolean isContinuous){
         this.isContinuous = isContinuous;
+        setPreferredSize(new Dimension(PANEL_W, PANEL_H));
         setLayout(new BorderLayout());
         Component edgeBox = Box.createRigidArea(new Dimension(EDGE_MARGIN_W, EDGE_MARGIN_W));
         add(BorderLayout.EAST, edgeBox);
@@ -61,11 +65,13 @@ public class LabelUnit extends JPanel{
     private JPanel getValuePanel() {
         //スライダーかチェックボックスが入る部分
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        if(isContinuous){
+        if(!isContinuous){
+            panel.setLayout(new BorderLayout());
             checkBox = new JCheckBox();
-            panel.add(checkBox);
+            panel.add(BorderLayout.CENTER, checkBox);
+            checkBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         }else{
+            panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
             valueLabel = new JLabel(VALUE_LABEL_TEXT);
             getSlider();
             panel.add(slider);
@@ -77,14 +83,13 @@ public class LabelUnit extends JPanel{
     private void getSlider() {
         //スライダーを作成
         slider = new JSlider(SLIDER_MIN, SLIDER_MAX);
+        slider.setValue(SLIDER_MIN);
         slider.addChangeListener(new ChangeListener(){
             @Override
             public void stateChanged(ChangeEvent e) {
-                if (!slider.getValueIsAdjusting()) {
-                    float value = (float) slider.getValue() / SLIDER_MAX;
-                    String text = String.format(VALUE_FORMAT, value);
-                    valueLabel.setText(text);
-                  }
+                float value = (float) slider.getValue() / SLIDER_MAX;
+                String text = String.format(VALUE_FORMAT, value);
+                valueLabel.setText(text);
             }
         });
     }

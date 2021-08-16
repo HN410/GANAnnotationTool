@@ -21,7 +21,7 @@ import deeplearning.panels.TagsPanel;
 import javafx.scene.layout.Border;
 
 public class MainWindow extends JFrame implements WindowListener{
-    private static final int WINDOW_W = 700;
+    private static final int WINDOW_W = 750;
     private static final int WINDOW_H = 400;
     private static final int WINDOW_X = 100;
     private static final int WINDOW_Y = 100;
