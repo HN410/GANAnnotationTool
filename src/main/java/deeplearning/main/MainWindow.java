@@ -35,6 +35,10 @@ public class MainWindow extends JFrame implements WindowListener{
     public Properties properties;
     public DataInfo dataInfo;
     public JMenuBar menuBar;
+    public ImagesPanel imagesPanel;
+    public TagsPanel tagsPanel;
+    public int tagsInd;  //現在何番目のタグの操作をしているか
+
 
     public MainWindow(){
         super();
@@ -45,6 +49,7 @@ public class MainWindow extends JFrame implements WindowListener{
 
         properties = PropertiesClass.getProperties();
         dataInfo = DataInfo.getDataInfo(properties.getProperty(PropertiesClass.CONFIG_PATH));
+        tagsInd = dataInfo.tags.size();
         
 
         JPanel allPanel = getAllPanel();
@@ -69,10 +74,11 @@ public class MainWindow extends JFrame implements WindowListener{
         JPanel interactivePanel = new JPanel();
         interactivePanel.setLayout(new BoxLayout(interactivePanel, BoxLayout.X_AXIS));
         
-        ImagesPanel imagesPanel = new ImagesPanel(this);
+        imagesPanel = new ImagesPanel(this);
         interactivePanel.add(imagesPanel);
 
-        TagsPanel tagsPanel = new TagsPanel(this);
+        tagsPanel = new TagsPanel(this);
+        tagsPanel.setIndexLabel(tagsInd);
         interactivePanel.add(tagsPanel);
 
         allPanel.add(BorderLayout.CENTER, interactivePanel);
@@ -110,6 +116,7 @@ public class MainWindow extends JFrame implements WindowListener{
         // TODO Auto-generated method stub
         PropertiesClass.setProperties(properties);
         dataInfo.save();
+        dataInfo.tagsSave();
         dispose();
         System.exit(0);
         
