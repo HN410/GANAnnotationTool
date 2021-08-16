@@ -17,11 +17,12 @@ import javax.swing.SwingConstants;
 import deeplearning.dataInfo.DataInfo;
 import deeplearning.menu.MenuBar;
 import deeplearning.panels.ImagesPanel;
+import deeplearning.panels.TagsPanel;
 import javafx.scene.layout.Border;
 
 public class MainWindow extends JFrame implements WindowListener{
-    private static final int WINDOW_W = 800;
-    private static final int WINDOW_H = 340;
+    private static final int WINDOW_W = 700;
+    private static final int WINDOW_H = 400;
     private static final int WINDOW_X = 100;
     private static final int WINDOW_Y = 100;
 
@@ -70,6 +71,9 @@ public class MainWindow extends JFrame implements WindowListener{
         
         ImagesPanel imagesPanel = new ImagesPanel(this);
         interactivePanel.add(imagesPanel);
+
+        TagsPanel tagsPanel = new TagsPanel(this);
+        interactivePanel.add(tagsPanel);
 
         allPanel.add(BorderLayout.CENTER, interactivePanel);
                 
