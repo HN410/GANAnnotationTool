@@ -110,6 +110,16 @@ public class ImagePanelUnit extends JPanel{
             }
         }
     }
+
+    public void setImageFile(String filePath){
+        //ページ移動などで表示画像を変えるとき
+        beforeImageFile = filePath;
+        imageDatafile = filePath;
+        imageOriginFile = null;
+        File imageFile = new File(filePath);
+        fileName = imageFile.getName();
+        setImage(filePath);
+    }
     
     private void setImage(String filePath) {
         ImageIcon icon = getResizedImageIcon(filePath);

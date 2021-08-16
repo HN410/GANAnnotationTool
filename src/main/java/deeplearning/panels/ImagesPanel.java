@@ -1,6 +1,9 @@
 package deeplearning.panels;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.LinkedHashMap;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,9 +19,11 @@ public class ImagesPanel extends JPanel{
     private static final String TARGET_LABEL = "Target image";
     private ImagePanelUnit ipu1;
     private ImagePanelUnit ipu2;
+    private MainWindow mainWindow;
 
     public ImagesPanel(MainWindow mainWindow){
         super();
+        this.mainWindow = mainWindow;
         setLayout(new GridLayout(1, 2));
 
         ipu1 = new ImagePanelUnit(mainWindow, SOURCE_LABEL, true);
@@ -54,6 +59,21 @@ public class ImagesPanel extends JPanel{
     public void setImages(int ind){
         //ページ移動の時などで表示する画像を変える
         //ind ... tagsのインデックス
+        ImagePanelUnit[] ipus = {ipu1, ipu2};
+        LinkedHashMap<String, Float[]> tag = mainWindow.dataInfo.tags.get(ind);
+        int i = 0;
+
+        for(String fileName: tag.keySet()){
+            String folderName = null;
+            if(i == 0){
+                folderName = mainWindow.dataInfo.sourcePath;
+            }else{
+                folderName = mainWindow.dataInfo.targetPath;
+            }
+            Path folderPath = Paths.get(folderName);
+            Path fullPath = folderPath.resolve(fileName);
+            ipus[i++].setImageFile(fullPath.toString());
+        }
     }
     
 }

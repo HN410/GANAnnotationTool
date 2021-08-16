@@ -36,7 +36,7 @@ public class DataInfo implements Serializable{
     public boolean isSourceZero; //sourceのラベルがすべて0か
     public HashSet<String> sourceImages; //sourceフォルダに入っている画像名
     public HashSet<String> targetImages; 
-    public transient LinkedList<HashMap<String, Float[]>> tags;
+    public transient LinkedList<LinkedHashMap<String, Float[]>> tags;
 
     public String folderPath;
     public String sourcePath;
@@ -107,7 +107,7 @@ public class DataInfo implements Serializable{
 
         ObjectMapper mapper = new ObjectMapper();
         try {
-            tags = mapper.readValue(tagFilePath.toFile(), new TypeReference<LinkedList<HashMap<String, Float[]>>>(){});
+            tags = mapper.readValue(tagFilePath.toFile(), new TypeReference<LinkedList<LinkedHashMap<String, Float[]>>>(){});
         } catch (StreamReadException e) {
             // TODO Auto-generated catch block
             ErrorChecker.errorCheck(e);
