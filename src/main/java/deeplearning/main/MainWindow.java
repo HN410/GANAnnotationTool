@@ -34,7 +34,7 @@ public class MainWindow extends JFrame implements WindowListener{
 
     public Properties properties;
     public DataInfo dataInfo;
-    public JMenuBar menuBar;
+    public MenuBar menuBar;
     public ImagesPanel imagesPanel;
     public TagsPanel tagsPanel;
     public int tagsInd;  //現在何番目のタグの操作をしているか

@@ -32,8 +32,10 @@ public class ImagePanelUnit extends JPanel{
 
     private boolean isTagged = false; //今表示されている画像はdataInfo.tagsにデータとして入っているか
     private boolean isSource;//ソースの方の画面か
+    private String beforeImageFile = null; //現在のインデックスでtagsに登録されているパスを保持する
     private String imageDatafile = null; //現在表示されている画像のdataフォルダに入っているほうのパス これがあれば画像がある
-    private String imageOriginFile = null; //現在表示されている画像のドラッグ元のパス
+    private String imageOriginFile = null; //現在表示されている画像のドラッグ元のパス すでにdataフォルダないにある画像を使う場合はnull
+    private String fileName = null;
 
     private MainWindow mainWindow;
     private JLabel imageLabel;
@@ -63,6 +65,52 @@ public class ImagePanelUnit extends JPanel{
         return !(imageDatafile == null);
     }
 
+    
+    public void imageDropped(File file){
+        //画像がドロップされたら呼び出される
+        DataInfo dataInfo = mainWindow.dataInfo;
+        if(isSource){
+            inImageDropped(dataInfo.sourceImages, dataInfo.sourcePath, file);
+        }else{
+            inImageDropped(dataInfo.targetImages, dataInfo.targetPath, file);
+        }
+    }
+    
+    public String getFileName(){
+        //現在表示中の画像ファイルのファイル名だけを返す
+        return fileName;
+    }
+
+    public void imageCopyMove(){
+        //画像の移動，コピー処理
+        if(!beforeImageFile.equals(imageDatafile)){
+            if(beforeImageFile != null){
+                //前のファイルの削除
+                try {
+                    Files.delete(Paths.get(beforeImageFile));
+                } catch (IOException e) {
+                    ErrorChecker.errorCheck(e);
+                }
+            }
+            if(imageOriginFile != null){
+                Path before = Paths.get(imageOriginFile);
+                Path after = Paths.get(imageDatafile);
+                //ファイル移動
+                try {
+                    if(mainWindow.menuBar.originRemoveCheck.isSelected()){
+                        //移動
+                            Files.move(before, after);
+                        }else{
+                            //コピー
+                            Files.copy(before, after);
+                        }
+                } catch (IOException e) {
+                    ErrorChecker.errorCheck(e);
+                }
+            }
+        }
+    }
+    
     private void setImage(String filePath) {
         ImageIcon icon = getResizedImageIcon(filePath);
         imageLabel.setIcon(icon);
@@ -112,18 +160,9 @@ public class ImagePanelUnit extends JPanel{
         return icon;
     }
 
-    public void imageDropped(File file){
-        //画像がドロップされたら呼び出される
-        DataInfo dataInfo = mainWindow.dataInfo;
-        if(isSource){
-            inImageDropped(dataInfo.sourceImages, dataInfo.sourcePath, file);
-        }else{
-            inImageDropped(dataInfo.targetImages, dataInfo.targetPath, file);
-        }
-    }
 
     private void inImageDropped(HashSet<String> images, String folderName, File imageFile){
-        String fileName = imageFile.getName();
+        fileName = imageFile.getName();
         Path folderPath = Paths.get(folderName);
         Path imagePath = folderPath.resolve(fileName);
         boolean conflict = false;
@@ -153,4 +192,6 @@ public class ImagePanelUnit extends JPanel{
         }
         return true;
     }
+
+    
 }
