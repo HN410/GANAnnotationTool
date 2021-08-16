@@ -9,11 +9,13 @@ import java.util.Properties;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
 import deeplearning.dataInfo.DataInfo;
+import deeplearning.menu.MenuBar;
 import deeplearning.panels.ImagesPanel;
 import javafx.scene.layout.Border;
 
@@ -31,6 +33,7 @@ public class MainWindow extends JFrame implements WindowListener{
 
     public Properties properties;
     public DataInfo dataInfo;
+    public JMenuBar menuBar;
 
     public MainWindow(){
         super();
@@ -44,8 +47,10 @@ public class MainWindow extends JFrame implements WindowListener{
         
 
         JPanel allPanel = getAllPanel();
-
         setContentPane(allPanel);
+
+        menuBar = new MenuBar(this);
+        setJMenuBar(menuBar);
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         addWindowListener(this);
