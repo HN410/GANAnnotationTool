@@ -32,7 +32,7 @@ public class ImagePanelUnit extends JPanel{
 
     private boolean isTagged = false; //今表示されている画像はdataInfo.tagsにデータとして入っているか
     private boolean isSource;//ソースの方の画面か
-    private String imageDatafile = null; //現在表示されている画像のdataフォルダに入っているほうのパス
+    private String imageDatafile = null; //現在表示されている画像のdataフォルダに入っているほうのパス これがあれば画像がある
     private String imageOriginFile = null; //現在表示されている画像のドラッグ元のパス
 
     private MainWindow mainWindow;
@@ -56,6 +56,11 @@ public class ImagePanelUnit extends JPanel{
         add(BorderLayout.SOUTH, label);
         add(BorderLayout.CENTER, imagePanel);
 
+    }
+
+    public boolean hasImage(){
+        //画像が表示されているか
+        return !(imageDatafile == null);
     }
 
     private void setImage(String filePath) {
