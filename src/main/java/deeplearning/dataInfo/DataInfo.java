@@ -135,4 +135,21 @@ public class DataInfo implements Serializable{
         }
     }
 
+    public void tagsSave(){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(new File(tagsPath), tags);
+        } catch (StreamReadException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        } catch (DatabindException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        }
+
+    }
+
 }
