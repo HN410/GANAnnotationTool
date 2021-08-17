@@ -14,6 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.MediaTracker;
 import java.awt.Image;
+import java.awt.Component;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -146,7 +147,7 @@ public class ImagePanelUnit extends JPanel{
     }
     
     private void setImage(String filePath) {
-        ImageIcon icon = getResizedImageIcon(filePath);
+        ImageIcon icon = getResizedImageIcon(filePath, this);
         imageLabel.setIcon(icon);
         imagePanel.repaint();
         imagePanel.revalidate();
@@ -175,8 +176,9 @@ public class ImagePanelUnit extends JPanel{
     }
  
     
-    private ImageIcon getResizedImageIcon(String imagePath){
-        MediaTracker tracker = new MediaTracker(this); 
+    public static ImageIcon getResizedImageIcon(String imagePath, Component comp){
+        //リサイズしたimageIconを返す
+        MediaTracker tracker = new MediaTracker(comp); 
 
         ImageIcon icon = new ImageIcon(imagePath);
         int height = icon.getIconHeight();

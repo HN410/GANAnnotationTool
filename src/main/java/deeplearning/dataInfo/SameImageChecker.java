@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -14,11 +16,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import deeplearning.main.Configs;
+import deeplearning.main.ErrorChecker;
+import deeplearning.panels.ImagePanelUnit;
+
 public class SameImageChecker extends JFrame{
     private static final int WINDOW_W = 400;
     private static final int WINDOW_H = 400;
     private static final int WINDOW_X = 200;
     private static final int WINDOW_Y = 200;
+
+    private static final int IMAGE_N_W = 2;
+    private static final int IMAGE_N_H = 1;
 
     private static final int BUTTON_W = 20;
     private static final int BUTTON_H = 20;
@@ -27,15 +36,19 @@ public class SameImageChecker extends JFrame{
     private static final int LABEL_M_H = 10;
 
     private static final String TITLE = "同一画像の検出";
-    private static final String CONFIRM_TEXT1 = 
-        "同一ファイル名を検出しました．同じ画像として扱いますか?";
+    private static final String CONFIRM_TEXT1 = "同一ファイル名を検出しました．同じ画像として扱いますか?";
     private static final String CONFIRM_TEXT2 = "（違う画像として扱う場合，ファイル名を変更します．）";
     private static final String YES_BUTTON = "はい";
     private static final String NO_BUTTON = "いいえ";
+    private static final String DROPPED_LABEL = "現在受けとったファイル";
+    private static final String SAVED_LABEL = "すでにある同名ファイル";
+
+    private static Object lock = new Object(); //以下の排他制御用
+    private static boolean isSame; // 応答をここで受け取る
 
 
-    private JButton yesButton;
-    private JButton noButton;
+    public JButton yesButton;
+    public JButton noButton;
 
     public SameImageChecker(String[] files){
         //filesは今ドロップされたファイル，すでにあったファイルの順
@@ -74,11 +87,40 @@ public class SameImageChecker extends JFrame{
     }
 
     private JPanel getImagesPanel(String[] files) {
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new GridLayout(IMAGE_N_H, IMAGE_N_W));
+        panel.add(getImagePanelUnit(files[0], DROPPED_LABEL));
+        panel.add(getImagePanelUnit(files[1], SAVED_LABEL));
         
+        return panel;
+    }
+
+    private JPanel getImagePanelUnit(String file, String labelText){
+        JPanel panel = new JPanel(new BorderLayout());
+        
+        JPanel imagePanel = new JPanel();
+        imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
+
+        JLabel imageLabel = getImageLabel(file);
+        imagePanel.add(imageLabel);
+
+        JLabel textLabel = new JLabel(labelText);
+        textLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        panel.add(BorderLayout.SOUTH, getPanelWithMargin(textLabel, 0, BUTTON_H));
+        panel.add(BorderLayout.CENTER, imagePanel);
 
         return panel;
     }
+
+    private JLabel getImageLabel(String fileName) {
+        JLabel label = new JLabel();
+        label.setMinimumSize(new Dimension(Configs.IMAGE_SIZE, Configs.IMAGE_SIZE));
+        label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        label.setIcon(ImagePanelUnit.getResizedImageIcon(fileName, this));
+        return label;
+    }
+
+
 
     private JPanel getButtonsPanel() {
         JPanel panel = new JPanel();
@@ -104,6 +146,51 @@ public class SameImageChecker extends JFrame{
         panel.add(BorderLayout.CENTER, comp);
 
         return panel;
+    }
+
+    public static boolean isSame(String[] files){
+        //二つのファイルを受け取り，それが同じかをユーザに判断してもらう
+        SameImageChecker frame = new SameImageChecker(files);
+        frame.setVisible(true);
+
+        Thread t = new Thread() {
+            public void run() {
+                synchronized(lock) {
+                    while (frame.isVisible())
+                        try {
+                            lock.wait();
+                        } catch (InterruptedException e) {
+                            ErrorChecker.errorCheck(e);
+                        }
+                }
+            }
+        };
+        t.start();
+        frame.yesButton.addActionListener(getActionListener(true, frame));
+        frame.noButton.addActionListener(getActionListener(false, frame));
+
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            ErrorChecker.errorCheck(e);
+        }
+        return SameImageChecker.isSame;
+
+    }
+
+    private static ActionListener getActionListener(boolean b, SameImageChecker frame) {
+        //何かアクションが起きたら isSame にbを書き込み，lockにnotifyする
+        ActionListener al = new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                synchronized (lock) {
+                    isSame = b;
+                    frame.dispose();
+                    lock.notify();
+                }
+            }
+        };
+        return al;
     }
     
 }
