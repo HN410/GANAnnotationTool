@@ -7,6 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import java.awt.Dimension;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.awt.BorderLayout;
@@ -185,10 +187,26 @@ public class TagsPanel extends JPanel implements ActionListener{
 
 
     private void addTagsImages() {
-        //SourceImages, TargetImagesへの追加
+        //SourceImages, TargetImages, sameImagesへの追加
         String[] fileNames = mainWindow.imagesPanel.getImageNames();
         mainWindow.dataInfo.sourceImages.add(fileNames[0]);
         mainWindow.dataInfo.targetImages.add(fileNames[1]);
+        if(mainWindow.imagesPanel.hasSameImage()){
+            addSameImages(fileNames[0]);
+        }
+    }
+
+
+    private void addSameImages(String fileName) {
+        //sameImagesへの追加
+        HashMap<String, HashSet<Integer>> sameImages =  mainWindow.dataInfo.sameImages;
+        if(sameImages.keySet().contains(fileName)){
+            sameImages.get(fileName).add(mainWindow.tagsInd);
+        }else{
+            HashSet<Integer> set = new HashSet<>();
+            set.add(mainWindow.tagsInd);
+            sameImages.put(fileName, set);
+        }
     }
 
 

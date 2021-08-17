@@ -112,6 +112,7 @@ public class MainWindow extends JFrame implements WindowListener{
         imagesPanel.imageCopyMove();
         dataInfo.save();
         dataInfo.tagsSave();
+        dataInfo.sameImagesSave();
     }
 
     @Override

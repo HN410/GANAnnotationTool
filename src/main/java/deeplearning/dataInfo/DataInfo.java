@@ -57,6 +57,7 @@ public class DataInfo implements Serializable{
         targetImages = new HashSet<>();
         DataInitializer.init(this);
         getTags(folderPath);
+        getSameImages(folderPath);
     }
 
     private void setFilePath(String folderPath) {
@@ -97,6 +98,7 @@ public class DataInfo implements Serializable{
             ErrorChecker.errorCheck(e);
         }
         dataInfo.getTags(folderPath);
+        dataInfo.getSameImages(folderPath);
         return dataInfo;
     }
     
