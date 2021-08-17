@@ -72,6 +72,12 @@ public class LabelUnit extends JPanel{
         if(!isContinuous){
             panel.setLayout(new BorderLayout());
             checkBox = new JCheckBox();
+            checkBox.addChangeListener(new ChangeListener(){
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    hasChanged = true;                    
+                }
+            });
             panel.add(BorderLayout.CENTER, checkBox);
             checkBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         }else{
