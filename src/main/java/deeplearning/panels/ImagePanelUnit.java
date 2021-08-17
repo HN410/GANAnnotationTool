@@ -10,6 +10,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.MediaTracker;
@@ -23,13 +25,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import deeplearning.dataInfo.DataInfo;
+import deeplearning.dataInfo.SameImageChecker;
 import deeplearning.main.ErrorChecker;
 import deeplearning.main.MainWindow;
 
 //画像一枚分のJPanel
 public class ImagePanelUnit extends JPanel{
+    private static final String SAME_TARGET_IMAGE_ERROR = "同じtarget画像を登録することはできません．";
+    private static final String ANOTHER_PATH_LAST = "_0";
+    private static final Pattern REGEX_PATTERN = Pattern.compile("(\\A.*_)(\\d*)\\z");
+    private static final int REGEX_FIRST_GROUP = 1;
+    private static final int REGEX_SECOND_GROUP = 2;
     private static final int IMAGE_SIZE = 200;
     private static final int LABEL_MARGIN_W = 10;
+    private static final int COMPARE_IMAGES_N = 2;
 
     private boolean isTagged = false; //今表示されている画像はdataInfo.tagsにデータとして入っているか
     private boolean isSource;//ソースの方の画面か
@@ -203,14 +212,10 @@ public class ImagePanelUnit extends JPanel{
         fileName = imageFile.getName();
         Path folderPath = Paths.get(folderName);
         Path imagePath = folderPath.resolve(fileName);
-        boolean conflict = false;
         if(images.contains(fileName)){
             //同名ファイルあり
-            conflict = conflictImageName(imageFile, imagePath.toFile());
-            if(!conflict){
-                //同名でこれ以上の処理をしない場合
-                return;
-            }
+            conflictImageName(imageFile, imagePath.toFile(), fileName, images);
+            return;
         }
         //コピーはタグ付け確定時
 
@@ -220,15 +225,62 @@ public class ImagePanelUnit extends JPanel{
 
     }
 
-    private boolean conflictImageName(File newImage, File oldImage){
+    private void conflictImageName(File newImage, File oldImage, String fileName, HashSet<String> images){
         //ドロップされたものと同じファイル名のものが存在したとき
         //tagetでのconflictはエラー処理
-        //sourceで，同名だけど違う画像なら上と同じ処理
+        //sourceで，同名だけど違う画像なら名前を変えて同じ処理
         //sourceでは，コピーする必要なし，同じ画像群だったらsameImages.jsonにsource画像をキーとする辞書を作って保存
         if(!isSource){
-            return false;
+            mainWindow.setMessage(SAME_TARGET_IMAGE_ERROR);
+            return;
         }
-        return true;
+        String imageDestination = null; //ファイルのコピー先
+        String[] files = new String[COMPARE_IMAGES_N];
+        files[0] = newImage.getAbsolutePath();
+        files[1] = oldImage.getAbsolutePath();
+        while(true){
+            if(SameImageChecker.isSame(files)){
+                //同じ画像を使いまわす
+                this.fileName = fileName;
+                this.imageDatafile = files[1];
+                this.imageOriginFile = null;
+                setImage(files[1]);
+                return;
+            }else{
+                //違う画像
+                imageDestination = getAnotherFileName(oldImage.getAbsolutePath());
+                fileName = (new File(imageDestination)).getName();
+                if(!images.contains(fileName)){
+                    //名前を変えてもまた同じファイル名があったらまたループ
+                    Path folderPath = Paths.get(mainWindow.dataInfo.sourcePath);
+                    files[1] = folderPath.resolve(fileName).toString();
+
+                }else{
+                    //同じファイルがなければループ脱出
+                    break;
+                }
+            }
+        }
+        this.fileName = fileName;
+        this.imageDatafile = imageDestination;
+        this.imageOriginFile = newImage.getPath();
+        setImage(newImage.getPath());
+    }
+
+    public static String getAnotherFileName(String absolutePath) {
+        int extInd = absolutePath.lastIndexOf(".");
+        String ext = absolutePath.substring(extInd);
+        String newPath = absolutePath.substring(0, extInd);
+        
+        Matcher m = REGEX_PATTERN.matcher(newPath);
+        if(m.find()){
+            int i = Integer.parseInt(m.group(REGEX_SECOND_GROUP)) + 1;
+            newPath = m.group(REGEX_FIRST_GROUP) + i;
+        }else{
+            newPath += ANOTHER_PATH_LAST;
+        }
+        newPath +=  ext;
+        return newPath;
     }
 
     
