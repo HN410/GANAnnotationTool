@@ -34,6 +34,7 @@ public class ImagePanelUnit extends JPanel{
     private static final String SAME_TARGET_IMAGE_ERROR = "同じtarget画像を登録することはできません．";
     private static final String ANOTHER_PATH_LAST = "_0";
     private static final Pattern REGEX_PATTERN = Pattern.compile("(\\A.*_)(\\d*)\\z");
+    private static final int SAME_IMAGE_SET_N_LIMIT = 2;
     private static final int REGEX_FIRST_GROUP = 1;
     private static final int REGEX_SECOND_GROUP = 2;
     private static final int IMAGE_SIZE = 200;
@@ -105,12 +106,38 @@ public class ImagePanelUnit extends JPanel{
 
     public void imageCopyMove(){
         //画像の移動，コピー処理
+        //同時にsourceImages, targetImages, sameImagesの削除処理も行う
+        //mainWindow.tagsIndを使うので変更しないこと
         if(hasChanged()){
             if(beforeImageFile != null){
-                // 前のファイルの削除
-                // かぶったイメージを使っている場合，他にこのイメージを使っている場合があるので，
-                // それを確認すること
-                System.out.println("かぶり画像のチェックをしていないことに注意");
+                // 前のファイル，sourceImages内のファイル名の削除
+                // かぶったイメージを使っている場合，他にこのイメージを使っている場合があるので，それを確認
+                // かぶっていた場合，sameImagesから現在インデックスを削除し，その集合の要素数が1になった場合は，
+                // そのキーごと削除を行う
+                DataInfo dataInfo = mainWindow.dataInfo;
+                String beforeFileName = (new File(beforeImageFile)).getName();
+                if(isSource){
+                    if(dataInfo.sameImages.keySet().contains(beforeFileName)){
+                        //同じファイルが使われている
+                        //この時はsourceImages内のファイル名およびファイルは削除しない
+                        HashSet<Integer> indexSet = dataInfo.sameImages.get(beforeFileName);
+                        if(indexSet.size() == SAME_IMAGE_SET_N_LIMIT){
+                            // 要素数が1になるのでもう不要
+                            dataInfo.sameImages.remove(beforeFileName);
+                        }else{
+                            // まだ要素数が十分にある
+                            // indexの集合から現在インデックスを削除
+                            indexSet.remove(mainWindow.tagsInd);
+                        }
+                        return;
+                    }else{
+                        //同じファイル名はなし
+                        dataInfo.sourceImages.remove(beforeFileName);
+                    }
+
+                }else{
+                    dataInfo.targetImages.remove(beforeFileName);
+                }
                 try {
                     Files.delete(Paths.get(beforeImageFile));
                 } catch (IOException e) {
