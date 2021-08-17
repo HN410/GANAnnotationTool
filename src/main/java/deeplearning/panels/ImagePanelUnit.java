@@ -39,10 +39,13 @@ public class ImagePanelUnit extends JPanel{
 
     private MainWindow mainWindow;
     private JLabel imageLabel;
+    private DropFileHandler dropFileHandler;
 
     public ImagePanelUnit(MainWindow mainWindow, String labelText, Boolean isSource){
         this.isSource = isSource;
         this.mainWindow = mainWindow;
+        this.dropFileHandler = new DropFileHandler(this, mainWindow);
+        setTransferHandler(dropFileHandler);
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(IMAGE_SIZE, IMAGE_SIZE + LABEL_MARGIN_W*2));
 
@@ -142,7 +145,7 @@ public class ImagePanelUnit extends JPanel{
         JLabel label = new JLabel();
         label.setMinimumSize(new Dimension(IMAGE_SIZE, IMAGE_SIZE));
         label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        label.setTransferHandler(new DropFileHandler(this, mainWindow));
+        label.setTransferHandler(dropFileHandler);
         return label;
     }
 
