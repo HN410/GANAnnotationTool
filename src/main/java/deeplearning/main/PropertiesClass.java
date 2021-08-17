@@ -9,6 +9,7 @@ public class PropertiesClass {
 	private static final String address = "MainSettings.properties";
 
 	public static final String CONFIG_PATH = "configPath";
+	public static final String IMAGE_REMOVE = "originImageRemove";
 
 	public static void setProperties(Properties properties) {
 		FileOutputStream out = null;
