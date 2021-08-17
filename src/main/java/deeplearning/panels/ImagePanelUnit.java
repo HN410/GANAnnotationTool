@@ -122,7 +122,7 @@ public class ImagePanelUnit extends JPanel{
                 } catch (IOException e) {
                     ErrorChecker.errorCheck(e);
                 }
-                imageOriginFile = imageDatafile;
+                beforeImageFile = imageDatafile;
             }
         }
     }
