@@ -29,6 +29,7 @@ public class DataInfo implements Serializable{
     private static final String SOURCE_FOLDER = "source\\";
     private static final String TARGET_FOLDER = "target\\";
     private static final String TAGS_FILE_NAME = "tags.json";
+    private static final String SAME_IMAGES_FILE_NAME = "sameImages.json";
 
 
     public LinkedHashMap<String, Boolean> tagRule; //タグ規則 タグ名と連続値かのboolean
@@ -37,11 +38,13 @@ public class DataInfo implements Serializable{
     public HashSet<String> sourceImages; //sourceフォルダに入っている画像名
     public HashSet<String> targetImages; 
     public transient LinkedList<LinkedHashMap<String, Float[]>> tags;
+    public transient HashMap<String, HashSet<Integer>> sameImages; //同じ画像を使っているものをそのファイル名とインデックスの集合で定義
 
     public String folderPath;
     public String sourcePath;
     public String targetPath;
     public String tagsPath;
+    public String sameImagesPath;
     public String configFilePath;
 
     private DataInfo(String filePath, String folderPath){
@@ -63,9 +66,11 @@ public class DataInfo implements Serializable{
         Path filePathS = folder.resolve(SOURCE_FOLDER);
         Path filePathT = folder.resolve(TARGET_FOLDER);
         Path filePathTag = folder.resolve(TAGS_FILE_NAME);
+        Path filePathSame = folder.resolve(SAME_IMAGES_FILE_NAME);
         this.sourcePath = filePathS.toString();
         this.targetPath = filePathT.toString();
         this.tagsPath = filePathTag.toString();
+        this.sameImagesPath = filePathSame.toString();
         
     }
 
@@ -120,6 +125,30 @@ public class DataInfo implements Serializable{
         }
     }
 
+    private void getSameImages(String folderName) {
+        //tagsを読み込みor作成
+        Path folder = Paths.get(folderPath);
+        Path sameImagesFilePath = folder.resolve(SAME_IMAGES_FILE_NAME);
+        if(!sameImagesFilePath.toFile().exists()){
+            sameImages = new HashMap<>();
+            return;
+        }
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            sameImages = mapper.readValue(sameImagesFilePath.toFile(), new TypeReference<HashMap<String, HashSet<Integer>>>(){});
+        } catch (StreamReadException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        } catch (DatabindException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        }
+    }
+
     public void save() {
         //ファイルに保存
         try {
@@ -149,7 +178,22 @@ public class DataInfo implements Serializable{
             // TODO Auto-generated catch block
             ErrorChecker.errorCheck(e);
         }
+    }
 
+    public void sameImagesSave(){
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(new File(sameImagesPath), sameImages);
+        } catch (StreamReadException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        } catch (DatabindException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            ErrorChecker.errorCheck(e);
+        }
     }
 
 }
