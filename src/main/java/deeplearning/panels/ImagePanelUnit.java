@@ -116,6 +116,14 @@ public class ImagePanelUnit extends JPanel{
         }
     }
 
+    public void imageClear(){
+        beforeImageFile = null;
+        imageDatafile = null;
+        imageOriginFile = null;
+        fileName = null;
+        imageLabel.setIcon(null);        
+    }
+
     public void setImageFile(String filePath){
         //ページ移動などで表示画像を変えるとき
         beforeImageFile = filePath;

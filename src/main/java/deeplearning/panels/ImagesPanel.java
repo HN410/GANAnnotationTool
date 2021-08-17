@@ -80,5 +80,11 @@ public class ImagesPanel extends JPanel{
             ipus[i++].setImageFile(fullPath.toString());
         }
     }
+
+    public void imageClear(){
+        //画像表示を消す
+        ipu1.imageClear();
+        ipu2.imageClear();
+    }
     
 }
