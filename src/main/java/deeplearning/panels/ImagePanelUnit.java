@@ -69,6 +69,9 @@ public class ImagePanelUnit extends JPanel{
 
     public boolean hasChanged(){
         //画像が変わったか
+        if(beforeImageFile == null){
+            return imageDatafile != null;
+        }
         return !beforeImageFile.equals(imageDatafile);
     }
 

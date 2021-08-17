@@ -206,7 +206,11 @@ public class TagsPanel extends JPanel implements ActionListener{
         LinkedHashMap<String, Float[]> newTags = new LinkedHashMap<>();
         newTags.put(imageNames[0], allZero);
         newTags.put(imageNames[1], tags);
-        dataInfo.tags.set(mainWindow.tagsInd, newTags);
+        if(mainWindow.tagsInd == dataInfo.tags.size()){
+            dataInfo.tags.add(newTags);
+        }else{
+            dataInfo.tags.set(mainWindow.tagsInd, newTags);
+        }
     }
 
 
