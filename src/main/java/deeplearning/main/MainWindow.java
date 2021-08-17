@@ -105,6 +105,15 @@ public class MainWindow extends JFrame implements WindowListener{
         messageLabel.setText(text);
     }
 
+    public void dataSave(){
+        //現在の進行をファイルに保存
+        PropertiesClass.setProperties(properties);
+        tagsPanel.tagChangeIfNecessary();
+        imagesPanel.imageCopyMove();
+        dataInfo.save();
+        dataInfo.tagsSave();
+    }
+
     @Override
     public void windowOpened(WindowEvent e) {
         // TODO Auto-generated method stub
@@ -113,10 +122,7 @@ public class MainWindow extends JFrame implements WindowListener{
 
     @Override
     public void windowClosing(WindowEvent e) {
-        PropertiesClass.setProperties(properties);
-        dataInfo.save();
-        tagsPanel.tagChangeIfNecessary();
-        dataInfo.tagsSave();
+        dataSave();
         dispose();
         System.exit(0);
         

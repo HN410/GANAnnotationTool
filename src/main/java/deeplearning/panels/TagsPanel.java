@@ -106,6 +106,7 @@ public class TagsPanel extends JPanel implements ActionListener{
 
     public void tagChangeIfNecessary(){
         //必要があればタグ,画像集合の変更をする
+        //SourceImagesなどの変更をするので，dataInfo.saveより先に行うこと
         ImagesPanel imagesPanel = mainWindow.imagesPanel;
         if(imagesPanel.hasImages() && (imagesPanel.hasChanged() || labelChanged())){
             //何かしら変更があった
