@@ -65,6 +65,11 @@ public class ImagePanelUnit extends JPanel{
         return !(imageDatafile == null);
     }
 
+    public boolean hasChanged(){
+        //画像が変わったか
+        return !beforeImageFile.equals(imageDatafile);
+    }
+
     
     public void imageDropped(File file){
         //画像がドロップされたら呼び出される
@@ -83,7 +88,7 @@ public class ImagePanelUnit extends JPanel{
 
     public void imageCopyMove(){
         //画像の移動，コピー処理
-        if(!beforeImageFile.equals(imageDatafile)){
+        if(hasChanged()){
             if(beforeImageFile != null){
                 //前のファイルの削除
                 try {

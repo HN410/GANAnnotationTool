@@ -40,6 +40,11 @@ public class ImagesPanel extends JPanel{
         return ipu1.hasImage() && ipu2.hasImage();
     }
 
+    public boolean hasChanged(){
+        //画像のどちらかがが変わったか
+        return ipu1.hasChanged() || ipu2.hasChanged();
+    }
+
     public void imageCopyMove(){
         //画像をドラッグ元からdataフォルダにコピーもしくは移動する処理
         //コピー，移動する必要があるかはこちらで判断する
