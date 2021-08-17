@@ -10,6 +10,8 @@ public class PropertiesClass {
 
 	public static final String CONFIG_PATH = "configPath";
 	public static final String IMAGE_REMOVE = "originImageRemove";
+	public static final String TRUE = "y";
+	public static final String FALSE = "n";
 
 	public static void setProperties(Properties properties) {
 		FileOutputStream out = null;

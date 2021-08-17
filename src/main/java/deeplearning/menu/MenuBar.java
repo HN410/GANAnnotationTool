@@ -1,10 +1,14 @@
 package deeplearning.menu;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import deeplearning.main.MainWindow;
+import deeplearning.main.PropertiesClass;
 
 public class MenuBar extends JMenuBar{
     private static final String FILE_MENU_NAME = "ファイル";
@@ -24,7 +28,20 @@ public class MenuBar extends JMenuBar{
         this.add(optionMenu);
 
         originRemoveCheck = new JCheckBoxMenuItem(ORIGIN_REMOVE_CHECK);
+        initOriginRemoveCheck();
         optionMenu.add(originRemoveCheck);        
+    }
+    private void initOriginRemoveCheck() {
+        boolean value = mainwWindow.properties.getProperty(PropertiesClass.IMAGE_REMOVE)
+            .equals(PropertiesClass.TRUE);
+        originRemoveCheck.setSelected(value);
+        originRemoveCheck.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String value = originRemoveCheck.isSelected() ? PropertiesClass.TRUE : PropertiesClass.FALSE;
+                mainwWindow.properties.setProperty(PropertiesClass.IMAGE_REMOVE, value);
+            }
+        });
     }
     
 }
