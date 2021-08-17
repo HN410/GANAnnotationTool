@@ -40,6 +40,7 @@ public class ImagePanelUnit extends JPanel{
     private MainWindow mainWindow;
     private JLabel imageLabel;
     private DropFileHandler dropFileHandler;
+    private JPanel imagePanel;
 
     public ImagePanelUnit(MainWindow mainWindow, String labelText, Boolean isSource){
         this.isSource = isSource;
@@ -49,7 +50,7 @@ public class ImagePanelUnit extends JPanel{
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(IMAGE_SIZE, IMAGE_SIZE + LABEL_MARGIN_W*2));
 
-        JPanel imagePanel = new JPanel();
+        imagePanel = new JPanel();
         imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
 
         imageLabel = getImageLabel();
@@ -78,6 +79,7 @@ public class ImagePanelUnit extends JPanel{
     
     public void imageDropped(File file){
         //画像がドロップされたら呼び出される
+        
         DataInfo dataInfo = mainWindow.dataInfo;
         if(isSource){
             inImageDropped(dataInfo.sourceImages, dataInfo.sourcePath, file);
@@ -95,7 +97,10 @@ public class ImagePanelUnit extends JPanel{
         //画像の移動，コピー処理
         if(hasChanged()){
             if(beforeImageFile != null){
-                //前のファイルの削除
+                // 前のファイルの削除
+                // かぶったイメージを使っている場合，他にこのイメージを使っている場合があるので，
+                // それを確認すること
+                System.out.println("かぶり画像のチェックをしていないことに注意");
                 try {
                     Files.delete(Paths.get(beforeImageFile));
                 } catch (IOException e) {
@@ -109,11 +114,11 @@ public class ImagePanelUnit extends JPanel{
                 try {
                     if(mainWindow.menuBar.originRemoveCheck.isSelected()){
                         //移動
-                            Files.move(before, after);
-                        }else{
-                            //コピー
-                            Files.copy(before, after);
-                        }
+                        Files.move(before, after);
+                    }else{
+                        //コピー
+                        Files.copy(before, after);
+                    }
                 } catch (IOException e) {
                     ErrorChecker.errorCheck(e);
                 }
@@ -142,6 +147,8 @@ public class ImagePanelUnit extends JPanel{
     private void setImage(String filePath) {
         ImageIcon icon = getResizedImageIcon(filePath);
         imageLabel.setIcon(icon);
+        imagePanel.repaint();
+        imagePanel.revalidate();
     }
 
     private JLabel getImageLabel() {

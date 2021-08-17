@@ -130,6 +130,7 @@ public class TagsPanel extends JPanel implements ActionListener{
             return;
         }
         tagChangeIfNecessary();
+        imagesPanel.imageCopyMove();
         if(nextIndex == mainWindow.dataInfo.tags.size()){
             //新規追加
             labelZeroReset();
