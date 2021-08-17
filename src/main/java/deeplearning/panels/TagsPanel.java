@@ -199,6 +199,7 @@ public class TagsPanel extends JPanel implements ActionListener{
         Float[] allZero = new Float[dataInfo.tagRule.size()];
         Float[] tags = new Float[dataInfo.tagRule.size()];
         for(int i = 0; i < dataInfo.tagRule.size(); i++){
+            allZero[i] = 0.0f;
             tags[i] = labelUnits.get(i).getValue();
         }
         String[] imageNames = mainWindow.imagesPanel.getImageNames();
