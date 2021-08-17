@@ -9,6 +9,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import deeplearning.main.ErrorChecker;
 import javafx.scene.layout.Border;
 
 import java.awt.Dimension;
@@ -17,6 +18,7 @@ import java.awt.Component;
 import java.awt.GridLayout;
 public class LabelUnit extends JPanel{
     //ラベル付けをする部分の1項目分
+    private static final String INVALID_VALUE_SET = "CheckBoxにセットする値が不正です";
     private static final int PANEL_W = 200;
     private static final int PANEL_H = 20;
     private final static int EDGE_MARGIN_W = 15;
@@ -32,6 +34,8 @@ public class LabelUnit extends JPanel{
     private JCheckBox checkBox = null;
     private JSlider slider = null;
     private JLabel valueLabel = null;
+
+    public boolean hasChanged = true; //変更があったか はじめは新規データなので，true
 
     public LabelUnit(String label, boolean isContinuous){
         this.isContinuous = isContinuous;
@@ -87,6 +91,7 @@ public class LabelUnit extends JPanel{
         slider.addChangeListener(new ChangeListener(){
             @Override
             public void stateChanged(ChangeEvent e) {
+                hasChanged = true;
                 String text = String.format(VALUE_FORMAT, getSliderValue());
                 valueLabel.setText(text);
             }
@@ -106,5 +111,24 @@ public class LabelUnit extends JPanel{
             return checkBox.isSelected() ? 1.0f : 0.0f;
         }
     }
-    
+
+    public void setValue(float value){
+        //チェックボックス，スライダーどちらの場合でも共通の値を設定する
+        if(isContinuous){
+            int setValue =(int) (value * SLIDER_MAX);
+            slider.setValue(setValue);
+        }else{
+            boolean setValue;
+            if(value == 0.0f){
+                setValue = false;
+            }else if(value == 1.0f){
+                setValue = true;
+            }else{
+                ErrorChecker.errorCheck(INVALID_VALUE_SET);
+                return;
+            }
+            checkBox.setSelected(setValue);
+        }
+
+    }
 }
