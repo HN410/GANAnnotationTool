@@ -41,7 +41,7 @@ public class ImagePanelUnit extends JPanel{
     private static final int LABEL_MARGIN_W = 10;
     private static final int COMPARE_IMAGES_N = 2;
 
-    private boolean isTagged = false; //今表示されている画像はdataInfo.tagsにデータとして入っているか
+    private boolean hasSameImage = false; //現在表示中の画像は使いまわしか
     private boolean isSource;//ソースの方の画面か
     private String beforeImageFile = null; //現在のインデックスでtagsに登録されているパスを保持する
     private String imageDatafile = null; //現在表示されている画像のdataフォルダに入っているほうのパス これがあれば画像がある
@@ -90,6 +90,7 @@ public class ImagePanelUnit extends JPanel{
     
     public void imageDropped(File file){
         //画像がドロップされたら呼び出される
+        hasSameImage = false;
         
         DataInfo dataInfo = mainWindow.dataInfo;
         if(isSource){
@@ -268,6 +269,7 @@ public class ImagePanelUnit extends JPanel{
         while(true){
             if(SameImageChecker.isSame(files)){
                 //同じ画像を使いまわす
+                hasSameImage = true;
                 this.fileName = fileName;
                 this.imageDatafile = files[1];
                 this.imageOriginFile = null;
@@ -308,6 +310,10 @@ public class ImagePanelUnit extends JPanel{
         }
         newPath +=  ext;
         return newPath;
+    }
+
+    public boolean hasSameImage() {
+        return hasSameImage;
     }
 
     

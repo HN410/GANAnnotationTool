@@ -87,4 +87,8 @@ public class ImagesPanel extends JPanel{
         ipu2.imageClear();
     }
     
+    public boolean hasSameImage(){
+        //現在表示中の画像が保存済のものと同じものの使いまわしか
+        return ipu1.hasSameImage();
+    }
 }
