@@ -50,7 +50,6 @@ public class ImagePanelUnit extends JPanel{
         imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
 
         imageLabel = getImageLabel();
-        setImage("./test.jpg");
         imagePanel.add(imageLabel);
 
         JPanel label = getLabelPanel(labelText);

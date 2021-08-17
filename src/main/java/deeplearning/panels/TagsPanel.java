@@ -104,6 +104,16 @@ public class TagsPanel extends JPanel implements ActionListener{
         
     }
 
+    public void tagChangeIfNecessary(){
+        //必要があればタグ,画像集合の変更をする
+        ImagesPanel imagesPanel = mainWindow.imagesPanel;
+        if(imagesPanel.hasImages() && (imagesPanel.hasChanged() || labelChanged())){
+            //何かしら変更があった
+            addTags();
+            addTagsImages();
+        }
+    }
+
 
     private void plusIndex(int plusInd) {
         //tagsのインデックスを増減させ，表示しているものを変える
@@ -119,11 +129,7 @@ public class TagsPanel extends JPanel implements ActionListener{
             mainWindow.setMessage(NO_IMAGE_SET_MESSAGE);
             return;
         }
-        if(imagesPanel.hasChanged() || labelChanged()){
-            //何かしら変更があった
-            addTags();
-            addTagsImages();
-        }
+        tagChangeIfNecessary();
         if(nextIndex == mainWindow.dataInfo.tags.size()){
             //新規追加
             labelZeroReset();

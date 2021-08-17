@@ -116,6 +116,7 @@ public class MainWindow extends JFrame implements WindowListener{
         // TODO Auto-generated method stub
         PropertiesClass.setProperties(properties);
         dataInfo.save();
+        tagsPanel.tagChangeIfNecessary();
         dataInfo.tagsSave();
         dispose();
         System.exit(0);
