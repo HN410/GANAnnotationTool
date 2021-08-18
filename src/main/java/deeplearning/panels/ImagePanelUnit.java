@@ -117,6 +117,7 @@ public class ImagePanelUnit extends JPanel{
                 // そのキーごと削除を行う
                 DataInfo dataInfo = mainWindow.dataInfo;
                 String beforeFileName = (new File(beforeImageFile)).getName();
+                boolean delete = true;
                 if(isSource){
                     if(dataInfo.sameImages.keySet().contains(beforeFileName)){
                         //同じファイルが使われている
@@ -130,7 +131,7 @@ public class ImagePanelUnit extends JPanel{
                             // indexの集合から現在インデックスを削除
                             indexSet.remove(mainWindow.tagsInd);
                         }
-                        return;
+                        delete = false;
                     }else{
                         //同じファイル名はなし
                         dataInfo.sourceImages.remove(beforeFileName);
@@ -139,10 +140,12 @@ public class ImagePanelUnit extends JPanel{
                 }else{
                     dataInfo.targetImages.remove(beforeFileName);
                 }
-                try {
-                    Files.delete(Paths.get(beforeImageFile));
-                } catch (IOException e) {
-                    ErrorChecker.errorCheck(e);
+                if(delete){
+                    try {
+                        Files.delete(Paths.get(beforeImageFile));
+                    } catch (IOException e) {
+                        ErrorChecker.errorCheck(e);
+                    }
                 }
             }
             if(imageOriginFile != null){
