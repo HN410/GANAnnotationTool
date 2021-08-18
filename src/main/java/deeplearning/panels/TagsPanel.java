@@ -205,8 +205,26 @@ public class TagsPanel extends JPanel implements ActionListener{
         }else{
             HashSet<Integer> set = new HashSet<>();
             set.add(mainWindow.tagsInd);
+            set.add(getOlderInd(mainWindow.tagsInd, fileName));
             sameImages.put(fileName, set);
         }
+    }
+
+
+    private Integer getOlderInd(int tagsInd, String fileName) {
+        //addSameImagesで一致したファイルのうち，古いほうのファイルのインデックスを検索して返す
+        int tagsLen = mainWindow.dataInfo.tags.size() -1; //繰り返し数はtagの数より1少ない (最後まで検索すると新しいファイルを見つけてしまう)
+        int nowInd = tagsInd;
+        boolean flag = false;
+        for(int i = 0; i < tagsLen; i++){
+            if(--nowInd < 0) nowInd = tagsLen;
+            for (String tag: mainWindow.dataInfo.tags.get(nowInd).keySet()){
+                if(tag.equals(fileName)) flag = true;  //一つ目がsourceのファイル名なので，一つ見たら抜けてよい
+                break;
+            }
+            if(flag) break;
+        }
+        return nowInd;
     }
 
 

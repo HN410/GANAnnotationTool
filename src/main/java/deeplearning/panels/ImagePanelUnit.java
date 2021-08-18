@@ -279,7 +279,7 @@ public class ImagePanelUnit extends JPanel{
                 //違う画像
                 imageDestination = getAnotherFileName(oldImage.getAbsolutePath());
                 fileName = (new File(imageDestination)).getName();
-                if(!images.contains(fileName)){
+                if(images.contains(fileName)){
                     //名前を変えてもまた同じファイル名があったらまたループ
                     Path folderPath = Paths.get(mainWindow.dataInfo.sourcePath);
                     files[1] = folderPath.resolve(fileName).toString();
