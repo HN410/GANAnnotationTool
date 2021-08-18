@@ -2,6 +2,7 @@ package deeplearning.dataInfo;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.GridLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,9 +20,10 @@ import javax.swing.SwingConstants;
 
 import deeplearning.main.Configs;
 import deeplearning.main.ErrorChecker;
+import deeplearning.main.MainWindow;
 import deeplearning.panels.ImagePanelUnit;
 
-public class SameImageChecker extends JFrame{
+public class SameImageChecker extends JDialog{
     private static final int WINDOW_W = 400;
     private static final int WINDOW_H = 400;
     private static final int WINDOW_X = 200;
@@ -50,12 +53,12 @@ public class SameImageChecker extends JFrame{
     public JButton yesButton;
     public JButton noButton;
 
-    public SameImageChecker(String[] files){
+    public SameImageChecker(String[] files, MainWindow mainWindow){
         //filesは今ドロップされたファイル，すでにあったファイルの順
-        super();
+        super(mainWindow, Dialog.DEFAULT_MODALITY_TYPE);
         setTitle(TITLE);
         setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(0);
         setBounds(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);  
 
         JPanel allPanel = new JPanel(new BorderLayout());
@@ -148,15 +151,14 @@ public class SameImageChecker extends JFrame{
         return panel;
     }
 
-    public static boolean isSame(String[] files){
+    public static boolean isSame(String[] files, MainWindow mainWindow){
         //二つのファイルを受け取り，それが同じかをユーザに判断してもらう
-        SameImageChecker frame = new SameImageChecker(files);
-        frame.setVisible(true);
+        SameImageChecker dialog = new SameImageChecker(files, mainWindow);
 
         Thread t = new Thread() {
             public void run() {
                 synchronized(lock) {
-                    while (frame.isVisible())
+                    while (dialog.isVisible())
                         try {
                             lock.wait();
                         } catch (InterruptedException e) {
@@ -166,8 +168,10 @@ public class SameImageChecker extends JFrame{
             }
         };
         t.start();
-        frame.yesButton.addActionListener(getActionListener(true, frame));
-        frame.noButton.addActionListener(getActionListener(false, frame));
+        dialog.yesButton.addActionListener(getActionListener(true, dialog));
+        dialog.noButton.addActionListener(getActionListener(false, dialog));
+        
+        dialog.setVisible(true);
 
         try {
             t.join();

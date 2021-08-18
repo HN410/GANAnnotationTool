@@ -267,7 +267,7 @@ public class ImagePanelUnit extends JPanel{
         files[0] = newImage.getAbsolutePath();
         files[1] = oldImage.getAbsolutePath();
         while(true){
-            if(SameImageChecker.isSame(files)){
+            if(SameImageChecker.isSame(files, mainWindow)){
                 //同じ画像を使いまわす
                 hasSameImage = true;
                 this.fileName = fileName;
