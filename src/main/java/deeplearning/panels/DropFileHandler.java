@@ -62,8 +62,13 @@ public class DropFileHandler extends TransferHandler{
                     mainWindow.setMessage(NOT_IMAGE_ERROR);
                     return false;
                 }
-                ipu.imageDropped(file);
 
+                Thread thread = new Thread() {
+                    public void run() {
+                        ipu.imageDropped(file);                            
+                    }
+                };
+                thread.start();
 
 			} catch (UnsupportedFlavorException | IOException e) {
 				e.printStackTrace();
