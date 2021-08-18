@@ -6,12 +6,17 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.metal.MetalSliderUI;
 
 import deeplearning.main.ErrorChecker;
 import javafx.scene.layout.Border;
 
+import java.awt.event.MouseEvent;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -26,6 +31,7 @@ public class LabelUnit extends JPanel{
     private final static int OUTER_GRID_H = 1;
     private final static int SLIDER_MIN = 0; 
     private final static int SLIDER_MAX = 100;
+    private final static int SLIDER_TICK = 10;
     private final static String VALUE_LABEL_TEXT = "0.00";
     private final static String VALUE_FORMAT = "%.02f";
 
@@ -102,6 +108,38 @@ public class LabelUnit extends JPanel{
                 valueLabel.setText(text);
             }
         });
+        slider.setMinorTickSpacing(SLIDER_TICK);
+        slider.setPaintTicks(true);
+        slider.setUI(new MetalSliderUI() {
+            @Override protected TrackListener createTrackListener(JSlider slider) {
+              return new TrackListener() {
+                @Override public void mousePressed(MouseEvent e) {
+                  if (UIManager.getBoolean("Slider.onlyLeftMouseButtonDrag")
+                        && SwingUtilities.isLeftMouseButton(e)) {
+                    JSlider slider = (JSlider) e.getComponent();
+                    switch (slider.getOrientation()) {
+                    case SwingConstants.VERTICAL:
+                      slider.setValue(valueForYPosition(e.getY()));
+                      break;
+                    case SwingConstants.HORIZONTAL:
+                      slider.setValue(valueForXPosition(e.getX()));
+                      break;
+                    default:
+                      throw new IllegalArgumentException(
+                          "Orientation must be one of: VERTICAL, HORIZONTAL");
+                    }
+                    super.mousePressed(e); 
+                    super.mouseDragged(e);
+                  } else {
+                    super.mousePressed(e);
+                  }
+                }
+                @Override public boolean shouldScroll(int direction) {
+                  return false;
+                }
+              };
+            }
+          });
     }
 
     private float getSliderValue(){
