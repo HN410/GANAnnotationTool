@@ -48,7 +48,7 @@ public class MainWindow extends JFrame implements WindowListener{
         setBounds(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);  
 
         properties = PropertiesClass.getProperties();
-        dataInfo = DataInfo.getDataInfo(properties.getProperty(PropertiesClass.CONFIG_PATH));
+        dataInfo = DataInfo.getDataInfo(properties.getProperty(PropertiesClass.CONFIG_PATH), this);
         tagsInd = dataInfo.tags.size();
         
 

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -21,7 +22,10 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
+import javax.swing.JFileChooser;
+
 import deeplearning.main.ErrorChecker;
+import deeplearning.main.MainWindow;
 
 public class DataInfo implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -30,6 +34,8 @@ public class DataInfo implements Serializable{
     private static final String TARGET_FOLDER = "target\\";
     private static final String TAGS_FILE_NAME = "tags.json";
     private static final String SAME_IMAGES_FILE_NAME = "sameImages.json";
+    private static final String INIT_FILE_PATH = "None";
+    private static final String FOLDER_CHOICE_ERROR = "フォルダ選択でエラー発生";
 
 
     public LinkedHashMap<String, Boolean> tagRule; //タグ規則 タグ名と連続値かのboolean
@@ -56,6 +62,7 @@ public class DataInfo implements Serializable{
         sourceImages = new HashSet<>();
         targetImages = new HashSet<>();
         DataInitializer.init(this);
+        makeFolders();
         getTags(folderPath);
         getSameImages(folderPath);
     }
@@ -71,12 +78,39 @@ public class DataInfo implements Serializable{
         this.sourcePath = filePathS.toString();
         this.targetPath = filePathT.toString();
         this.tagsPath = filePathTag.toString();
-        this.sameImagesPath = filePathSame.toString();
-        
+        this.sameImagesPath = filePathSame.toString();        
     }
 
-    public static DataInfo getDataInfo(String folderPath){
+    private void makeFolders() {
+        //データ初期化時にフォルダ作成
+        try {
+            Files.createDirectory(Paths.get(sourcePath));
+            Files.createDirectory(Paths.get(targetPath));
+        } catch (IOException e) {
+            ErrorChecker.errorCheck(e);
+        }
+    }
+
+    public static DataInfo getDataInfo(String folderPath, MainWindow mainWindow){
         // config.dataがあればそれを読み込み，そのデータセットの情報を読み込む
+        if(folderPath.equals(INIT_FILE_PATH)){
+            //まだ使ったことがない
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int select = fileChooser.showOpenDialog(mainWindow);
+            switch (select){
+                case JFileChooser.APPROVE_OPTION:
+                  folderPath = fileChooser.getSelectedFile().getAbsolutePath();
+                  break;
+                case JFileChooser.CANCEL_OPTION:
+                  mainWindow.dispose();
+                  break;
+                case JFileChooser.ERROR_OPTION:
+                  ErrorChecker.errorCheck(FOLDER_CHOICE_ERROR);
+                  break;
+
+            }
+        }
         Path folder = Paths.get(folderPath);
         Path filePath = folder.resolve(DATA_FILE_NAME);
         String fileName = filePath.toString();
