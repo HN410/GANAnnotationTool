@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 import deeplearning.main.Configs;
 import deeplearning.main.ErrorChecker;
 import deeplearning.main.MainWindow;
+import deeplearning.main.Utilities;
 import deeplearning.panels.ImagePanelUnit;
 
 public class SameImageChecker extends JDialog{
@@ -86,7 +87,7 @@ public class SameImageChecker extends JDialog{
         innerPanel.add(confirmLabel1);
         innerPanel.add(confirmLabel2);
         
-        return getPanelWithMargin(innerPanel, LABEL_M_W, LABEL_M_H);
+        return Utilities.getPanelWithMargin(innerPanel, LABEL_M_W, LABEL_M_H);
     }
 
     private JPanel getImagesPanel(String[] files) {
@@ -109,7 +110,7 @@ public class SameImageChecker extends JDialog{
         JLabel textLabel = new JLabel(labelText);
         textLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        panel.add(BorderLayout.SOUTH, getPanelWithMargin(textLabel, 0, BUTTON_H));
+        panel.add(BorderLayout.SOUTH, Utilities.getPanelWithMargin(textLabel, 0, BUTTON_H));
         panel.add(BorderLayout.CENTER, imagePanel);
 
         return panel;
@@ -134,22 +135,12 @@ public class SameImageChecker extends JDialog{
         yesButton.setPreferredSize(new Dimension(BUTTON_W, BUTTON_H));
         noButton.setPreferredSize(new Dimension(BUTTON_W, BUTTON_H));
 
-        panel.add(getPanelWithMargin(yesButton, BUTTON_W, BUTTON_H/2));
-        panel.add(getPanelWithMargin(noButton, BUTTON_W, BUTTON_H/2));
+        panel.add(Utilities.getPanelWithMargin(yesButton, BUTTON_W, BUTTON_H/2));
+        panel.add(Utilities.getPanelWithMargin(noButton, BUTTON_W, BUTTON_H/2));
         return panel;
     }
 
-    private JPanel getPanelWithMargin(JComponent comp, int marginW, int marginH){
-        JPanel panel = new JPanel(new BorderLayout());
-
-        panel.add(BorderLayout.NORTH, Box.createVerticalStrut(marginH));
-        panel.add(BorderLayout.SOUTH, Box.createVerticalStrut(marginH));
-        panel.add(BorderLayout.WEST, Box.createHorizontalStrut(marginW));
-        panel.add(BorderLayout.EAST, Box.createHorizontalStrut(marginW));
-        panel.add(BorderLayout.CENTER, comp);
-
-        return panel;
-    }
+    
 
     public static boolean isSame(String[] files, MainWindow mainWindow){
         //二つのファイルを受け取り，それが同じかをユーザに判断してもらう
