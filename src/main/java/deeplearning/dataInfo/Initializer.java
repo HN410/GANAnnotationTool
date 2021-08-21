@@ -3,6 +3,7 @@ package deeplearning.dataInfo;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -31,6 +32,7 @@ public class Initializer extends JFrame{
     public JButton okButton;
     private Initializer window;
     private JPanel tagRulesPanel;
+    private LinkedList<TagRuleUnit> tagRuleList;
     private static Object lock = new Object(); //以下の排他制御用
 
     public Initializer(DataInfo dataInfo){
@@ -41,6 +43,7 @@ public class Initializer extends JFrame{
         setBounds(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);  
 
         window = this;
+        tagRuleList = new LinkedList();
 
     
         JPanel allPanel = getAllPanel();
@@ -79,12 +82,16 @@ public class Initializer extends JFrame{
         tagRulesPanel = new JPanel();
         tagRulesPanel.setLayout(new BoxLayout(tagRulesPanel, BoxLayout.Y_AXIS));
         pane.setViewportView(tagRulesPanel);
+        addTagRuleUnit();
 
 
         return pane;
     }
 
     protected void addTagRuleUnit() {
+        TagRuleUnit tru = new TagRuleUnit();
+        tagRuleList.add(tru);
+        tagRulesPanel.add(tru);
     }
 
     protected void setDataInfo() {
@@ -105,7 +112,6 @@ public class Initializer extends JFrame{
                 }
             }
         };
-        t.start();
         window.okButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -117,6 +123,7 @@ public class Initializer extends JFrame{
             }
         });
         window.setVisible(true);
+        t.start();
 
         try {
             t.join();
