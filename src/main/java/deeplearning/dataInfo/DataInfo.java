@@ -26,6 +26,7 @@ import javax.swing.JFileChooser;
 
 import deeplearning.main.ErrorChecker;
 import deeplearning.main.MainWindow;
+import deeplearning.main.PropertiesClass;
 
 public class DataInfo implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -101,6 +102,7 @@ public class DataInfo implements Serializable{
             switch (select){
                 case JFileChooser.APPROVE_OPTION:
                   folderPath = fileChooser.getSelectedFile().getAbsolutePath();
+                  mainWindow.properties.setProperty(PropertiesClass.CONFIG_PATH, folderPath);
                   break;
                 case JFileChooser.CANCEL_OPTION:
                   mainWindow.dispose();
