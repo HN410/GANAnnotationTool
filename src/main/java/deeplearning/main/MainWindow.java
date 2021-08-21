@@ -48,6 +48,17 @@ public class MainWindow extends JFrame implements WindowListener{
         setBounds(WINDOW_X, WINDOW_Y, WINDOW_W, WINDOW_H);  
 
         properties = PropertiesClass.getProperties();
+
+        reset();
+
+        menuBar = new MenuBar(this);
+        setJMenuBar(menuBar);
+
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addWindowListener(this);
+    }
+
+    public void reset(){
         dataInfo = DataInfo.getDataInfo(properties.getProperty(PropertiesClass.CONFIG_PATH), this);
         tagsInd = dataInfo.tags.size();
         
@@ -55,11 +66,7 @@ public class MainWindow extends JFrame implements WindowListener{
         JPanel allPanel = getAllPanel();
         setContentPane(allPanel);
 
-        menuBar = new MenuBar(this);
-        setJMenuBar(menuBar);
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        addWindowListener(this);
     }
         
 
