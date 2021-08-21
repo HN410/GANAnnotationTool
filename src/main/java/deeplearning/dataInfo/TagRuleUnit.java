@@ -26,9 +26,9 @@ public class TagRuleUnit extends JPanel{
         setMaximumSize(new Dimension(TEXT_SIZE_W*3, TEXT_SIZE_H + TEXT_MARGIN_H*2));
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-        JTextField text = new JTextField();
+        text = new JTextField();
         text.setPreferredSize(new Dimension(TEXT_SIZE_W, TEXT_SIZE_H));
-        JCheckBox check = new JCheckBox();
+        check = new JCheckBox();
 
         add(Utilities.getPanelWithMargin(text, TEXT_MARGIN_W, TEXT_MARGIN_H));
         add(Utilities.getPanelWithMargin(check, CHECK_MARGIN_W, CHECK_MARGIN_H));
