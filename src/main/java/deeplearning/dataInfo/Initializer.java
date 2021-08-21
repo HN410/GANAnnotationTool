@@ -8,6 +8,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 import deeplearning.main.ErrorChecker;
 import deeplearning.main.Utilities;
@@ -26,9 +28,10 @@ public class Initializer extends JFrame{
     private static final String OK_BUTTON = "OK";
     private static final String ADD_BUTTON = "追加";
     
-    private Initializer window;
-    private static Object lock = new Object(); //以下の排他制御用
     public JButton okButton;
+    private Initializer window;
+    private JPanel tagRulesPanel;
+    private static Object lock = new Object(); //以下の排他制御用
 
     public Initializer(DataInfo dataInfo){
         super();
@@ -63,7 +66,7 @@ public class Initializer extends JFrame{
         buttonsPanel.add(Utilities.getPanelWithMargin(addButton, BUTTON_MARGIN_W, BUTTON_MARGIN_H));
         buttonsPanel.add(Utilities.getPanelWithMargin(okButton, BUTTON_MARGIN_W, BUTTON_MARGIN_H));
 
-        JPanel innerPanel = getTagRulesPanel();
+        JScrollPane innerPanel = getTagRulesPanel();
 
         panel.add(BorderLayout.CENTER, innerPanel);
         panel.add(BorderLayout.SOUTH, buttonsPanel);
@@ -71,8 +74,14 @@ public class Initializer extends JFrame{
         return panel;
     }
 
-    private JPanel getTagRulesPanel() {
-        return null;
+    private JScrollPane getTagRulesPanel() {
+        JScrollPane pane = new JScrollPane();
+        tagRulesPanel = new JPanel();
+        tagRulesPanel.setLayout(new BoxLayout(tagRulesPanel, BoxLayout.Y_AXIS));
+        pane.setViewportView(tagRulesPanel);
+
+
+        return pane;
     }
 
     protected void addTagRuleUnit() {
