@@ -62,7 +62,7 @@ public class DataInfo implements Serializable{
         isSourceZero = true;
         sourceImages = new HashSet<>();
         targetImages = new HashSet<>();
-        DataInitializer.init(this);
+        Initializer.init(this);
         makeFolders();
         getTags(folderPath);
         getSameImages(folderPath);
