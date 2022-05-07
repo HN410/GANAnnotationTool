@@ -37,6 +37,7 @@ public class DataInfo implements Serializable{
     private static final String SAME_IMAGES_FILE_NAME = "sameImages.json";
     private static final String INIT_FILE_PATH = "None";
     private static final String FOLDER_CHOICE_ERROR = "フォルダ選択でエラー発生";
+    private static final String FILE_CHOOSER_TITLE = "データセットの保存先ディレクトリを指定してください";
 
 
     public LinkedHashMap<String, Boolean> tagRule; //タグ規則 タグ名と連続値かのboolean
@@ -97,6 +98,7 @@ public class DataInfo implements Serializable{
         if(folderPath.equals(INIT_FILE_PATH)){
             //まだ使ったことがない
             JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle(FILE_CHOOSER_TITLE);
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int select = fileChooser.showOpenDialog(mainWindow);
             switch (select){

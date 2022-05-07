@@ -99,7 +99,7 @@ public class MainWindow extends JFrame implements WindowListener{
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JSeparator sep = new JSeparator(SwingConstants.HORIZONTAL);
-        messageLabel = new JLabel("test");
+        messageLabel = new JLabel(" ");
         messageLabel.setFont(new Font("ＭＳ ゴシック", Font.PLAIN, MESSAGE_FONT_SIZE));
 
         panel.add(sep);
